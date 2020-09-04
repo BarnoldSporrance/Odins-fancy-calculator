@@ -1,0 +1,71 @@
+.display{
+    grid-area: display;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+.rowOne{
+    grid-area: rowOne;
+    border-style: solid;
+    border-width: 0px;
+}
+
+.rowTwo{
+    grid-area: rowTwo;
+    border-style: solid;
+    border-width: 0px;
+}
+
+.rowThree{
+    grid-area: rowThree;
+    border-style: solid;
+    border-width: 0px;
+}
+
+.rowFour{
+    grid-area: rowFour;
+    border-style: solid;
+    border-width: 0px;
+}
+
+.rowFive{
+    grid-area: rowFive;
+    border-style: solid;
+    border-width: 0px;
+}
+
+.container {
+    padding-top: 10em;
+    margin:auto;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 2.5em 2.5em 2.5em 2.5em;
+    grid-template-rows: auto;
+    column-gap: 5px;
+    row-gap: 5px;
+    grid-template-areas: 
+    
+    "display display display display"  
+    "rowOne rowOne rowOne rowOne"
+    "rowTwo rowTwo rowTwo rowTwo"
+    "rowThree rowThree rowThree rowThree"
+    "rowFour rowFour rowFour rowFour"
+    "rowFive rowFive rowFive rowFive";
+}
+
+.display{
+    padding:10px;
+}
+
+.panelButton {
+    padding: 5px 10px 5px 10px;
+    width:3em;
+}
+
+.oneButton {
+    padding-left: 7px;
+    padding-right: 7px;
+    width: 3em;
+}
+

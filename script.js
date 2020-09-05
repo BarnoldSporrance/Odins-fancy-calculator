@@ -8,10 +8,23 @@ let seven = document.getElementById("7_Butt");
 let eight = document.getElementById("8_Butt");
 let nine = document.getElementById("9_Butt");
 
+let addOperand = document.getElementById("+_Butt");
+let subtractOperand = document.getElementById("-_Butt");
+let multiplyOperand = document.getElementById("*_Butt");
+let divideOperand = document.getElementById("/_Butt");
+let equalsOperand = document.getElementById("=_Butt");
+
+
 let display = document.getElementById("display");
 let numberInputArray = [];
 let realDisplay ="";
 let inputNumericalValue=0;
+let num1;
+let num2;
+let operandCounter = "pre";
+let operand ="";
+let operandVar;
+
 
 // Basic operator functions
 function add(num1, num2) {
@@ -30,13 +43,13 @@ function divide (num1, num2) {
 //function to choose operate on two numbers
 function operate(operand, num1, num2) {
   let result = 0;
-  if (operand === 'add'){
+  if (operand === '+'){
      result = add(num1,num2);
-  } else if (operand === 'subtract') {
+  } else if (operand === '-') {
        result = subtract(num1,num2);
-    } else if (operand === 'multiply') {
+    } else if (operand === '*') {
          result = multiply(num1,num2);    
-    } else if (operand === 'divide') {
+    } else if (operand === '/') {
            result = divide(num1,num2); 
     }
   return result;
@@ -54,13 +67,40 @@ function inputPush(e){
   // convert display string to a number for subsequent operations
   inputNumericalValue = parseInt(realDisplay);
   // display the current value on calculator screen
-  display.innerText = realDisplay;
+  
+  display.innerText = inputNumericalValue;
+  //console.log("operandCounter in inputPush function: "+ operandCounter);
 
-  return inputNumericalValue;
+  if (operandCounter === "pre") {
+    num1 = inputNumericalValue;
+   
+  } else if(operandCounter === "post") {
+    num2 = inputNumericalValue;
+  }
+  console.log("num1: " + num1);
+  console.log("operandVar: " + operandVar);
+  console.log("num2: " + num2);
+  let calcResult = operate(operandVar,num1,num2);
+  console.log("calcResult: "+ calcResult)
+  equalsOperand.onclick = function(){
+    display.innerText = calcResult;
+  }
+}
+
+// when we tap the operand
+function operandPush(e){
+  operandVar = e.target.id.slice(0,1);
+  console.log("operandVar: "+ operandVar);
+  //console.log("operandCounter in operandPush function pre switch: "+ operandCounter);
+  operandCounter = "post";
+ // console.log("operandCounter in operandPush function post switch: "+ operandCounter);
+  numberInputArray=[];
+  display.innerText = "";
 }
 
 
-// event listeners for the number buttons
+
+
 one.onclick = inputPush;
 two.onclick = inputPush;
 three.onclick = inputPush;
@@ -71,10 +111,12 @@ seven.onclick = inputPush;
 eight.onclick = inputPush;
 nine.onclick = inputPush;
 
-//console.log("inputNumericalValue after function:" + inputNumericalValue);
 
+divideOperand.onclick = operandPush;
+addOperand.onclick = operandPush;
+subtractOperand.onclick = operandPush;
+multiplyOperand.onclick = operandPush;
 
-operate('add',inputNumericalValue, 2);
 
 
 

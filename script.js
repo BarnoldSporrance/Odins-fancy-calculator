@@ -1,3 +1,4 @@
+// A ridiculuously large list of way too many global variables. Ouch.
 let one = document.getElementById("1_Butt");
 let two = document.getElementById("2_Butt");
 let three = document.getElementById("3_Butt");
@@ -14,6 +15,7 @@ let multiplyOperand = document.getElementById("*_Butt");
 let divideOperand = document.getElementById("/_Butt");
 let equalsOperand = document.getElementById("=_Butt");
 
+let allClear = document.getElementById("ac_Butt");
 
 let display = document.getElementById("display");
 let numberInputArray = [];
@@ -24,6 +26,7 @@ let num2;
 let operandCounter = "pre";
 let operand ="";
 let operandVar;
+let calcCounter = 0;
 
 
 // Basic operator functions
@@ -40,7 +43,7 @@ function divide (num1, num2) {
     return num1 / num2;
 }
 
-//function to choose operate on two numbers
+//function to operate on two numbers given an operator
 function operate(operand, num1, num2) {
   let result = 0;
   if (operand === '+'){
@@ -55,8 +58,7 @@ function operate(operand, num1, num2) {
   return result;
 } // end operate function
 
-
-// functions to get input from buttons
+// functions to get input from 1-9 number buttons
 function inputPush(e){
   // get string values for each number pressed
   let inputVar = e.target.id.slice(0,1);
@@ -71,23 +73,27 @@ function inputPush(e){
   display.innerText = inputNumericalValue;
   //console.log("operandCounter in inputPush function: "+ operandCounter);
 
+  // decide which number to assign the current input to - first or second number in the current calculation
   if (operandCounter === "pre") {
     num1 = inputNumericalValue;
    
   } else if(operandCounter === "post") {
     num2 = inputNumericalValue;
   }
-  console.log("num1: " + num1);
-  console.log("operandVar: " + operandVar);
-  console.log("num2: " + num2);
+  
   let calcResult = operate(operandVar,num1,num2);
-  console.log("calcResult: "+ calcResult)
+  calcCounter++;
+  console.log("calcResult: "+ calcResult);
   equalsOperand.onclick = function(){
     display.innerText = calcResult;
+    // ensure that operations can be layered on top of the last calculation
+    if ((operandCounter ==="post") && (calcCounter>0)){
+      num1 = calcResult;
+    }
   }
 }
 
-// when we tap the operand
+// function to get the operator used in a calculation
 function operandPush(e){
   operandVar = e.target.id.slice(0,1);
   console.log("operandVar: "+ operandVar);
@@ -98,9 +104,17 @@ function operandPush(e){
   display.innerText = "";
 }
 
+// function to clear everything, ready for a new calculation
+function clearAll(){
+   numberInputArray = [];
+   display.innerText = '';
+   inputNumericalValue = 0;
+   operandCounter = "pre";
+   num1 = 0;
+   num2 = 0;
+}
 
-
-
+// adding onclick events to buttons in super inefficent and clumsy fashion. Urgh. 
 one.onclick = inputPush;
 two.onclick = inputPush;
 three.onclick = inputPush;
@@ -110,12 +124,12 @@ six.onclick = inputPush;
 seven.onclick = inputPush;
 eight.onclick = inputPush;
 nine.onclick = inputPush;
-
-
 divideOperand.onclick = operandPush;
 addOperand.onclick = operandPush;
 subtractOperand.onclick = operandPush;
 multiplyOperand.onclick = operandPush;
+
+allClear.onclick = clearAll;
 
 
 

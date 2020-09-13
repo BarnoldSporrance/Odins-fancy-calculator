@@ -30,8 +30,9 @@ let operand ="";
 let operandVar;
 let calcCounter = 0;
 let calcRecordArray = [];
+let popCounter = 0;
 
-
+//** fixed it
 
 // Basic operator functions
 function add(num1, num2) {
@@ -80,13 +81,22 @@ function inputPush(e){
   // decide which number to assign the current input to - first or second number in the current calculation
   if (operandCounter === "pre") {
     num1 = inputNumericalValue;
-   
+    calcRecordArray.push(num1);
+
   } else if(operandCounter === "post") {
     num2 = inputNumericalValue;
+    calcRecordArray.push(num2);
+    //popCounter++;
   }
   
   let calcResult = operate(operandVar,num1,num2);
-  calcRecordArray.push(num2);
+  // calcRecordArray.push(num2);
+
+  if (popCounter>0){
+    calcRecordArray.pop();
+  }
+
+   
   calcCounter++;
   console.log("calcResult: "+ calcResult);
   equalsOperand.onclick = function(){
@@ -122,8 +132,8 @@ function inputPush(e){
 function operandPush(e){
   operandVar = e.target.id.slice(0,1);
 
-  calcRecordArray.push(realDisplay);
-  console.log("calcRecordArray in operandPush funct: " +  calcRecordArray);
+  //calcRecordArray.push(realDisplay);
+  //console.log("calcRecordArray in operandPush funct: " +  calcRecordArray);
 
   calcRecordArray.push(operandVar);
   console.log("calcRecordArray in operandPush funct after operator tapped: " +  calcRecordArray);
@@ -132,6 +142,8 @@ function operandPush(e){
   operandCounter = "post";
   numberInputArray=[];
   display.innerText = "";
+
+  miniDisplay.innerText = calcRecordArray;
 }
 
 // function to clear everything, ready for a new calculation
@@ -163,6 +175,8 @@ divideOperand.onclick = operandPush;
 addOperand.onclick = operandPush;
 subtractOperand.onclick = operandPush;
 multiplyOperand.onclick = operandPush;
+
+equalsOperand.onclick = operate(operandVar,num1,num2);
 
 allClear.onclick = clearAll;
 miniClear.onclick = clearAll;

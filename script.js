@@ -11,7 +11,7 @@ let nine = document.getElementById("9_Butt");
 
 let addOperand = document.getElementById("+_Butt");
 let subtractOperand = document.getElementById("-_Butt");
-let multiplyOperand = document.getElementById("*_Butt");
+let multiplyOperand = document.getElementById("x_Butt");
 let divideOperand = document.getElementById("/_Butt");
 let equalsOperand = document.getElementById("=_Butt");
 
@@ -30,7 +30,7 @@ let operand ="";
 let operandVar;
 let calcCounter = 0;
 let calcRecordArray = [];
-let popCounter = 0;
+let noCommaCalcRecordArray=[];
 
 //** fixed it
 
@@ -51,11 +51,14 @@ function divide (num1, num2) {
 //function to operate on two numbers given an operator
 function operate(operand, num1, num2) {
   let result = 0;
-  if (operand === '+'){
+if ((num1 === undefined) || (num2 === undefined)) {
+  result = "ERROR";
+  
+} else if (operand === '+'){
      result = add(num1,num2);
   } else if (operand === '-') {
        result = subtract(num1,num2);
-    } else if (operand === '*') {
+    } else if (operand === 'x') {
          result = multiply(num1,num2);    
       } else if (operand === '/') {
            result = divide(num1,num2); 
@@ -74,34 +77,25 @@ function inputPush(e){
   // convert display string to a number for subsequent operations
   inputNumericalValue = parseInt(realDisplay);
   // display the current value on calculator screen
-  
-  
   display.innerText = realDisplay;
-
   // decide which number to assign the current input to - first or second number in the current calculation
   if (operandCounter === "pre") {
     num1 = inputNumericalValue;
     calcRecordArray.push(num1);
+    noCommaCalcRecordArray = calcRecordArray.join(' ');
 
   } else if(operandCounter === "post") {
     num2 = inputNumericalValue;
     calcRecordArray.push(num2);
-    //popCounter++;
+    noCommaCalcRecordArray = calcRecordArray.join(' ');
   }
   
   let calcResult = operate(operandVar,num1,num2);
-  // calcRecordArray.push(num2);
 
-  if (popCounter>0){
-    calcRecordArray.pop();
-  }
-
-   
   calcCounter++;
   console.log("calcResult: "+ calcResult);
   equalsOperand.onclick = function(){
     
-    console.log("calcRecordArray after prressing equals: "+  calcRecordArray);
     
     
 
@@ -117,13 +111,9 @@ function inputPush(e){
     // ensure that operations can be layered on top of the last calculation
     if ((operandCounter ==="post") && (calcCounter>0)){
       num1 = calcResult;
-      console.log("calcRecordArray pre pop" + calcRecordArray)
-      //calcRecordArray.pop();
-     
-    //  console.log("calcRecordArray post pop" + calcRecordArray)
-
     }
-    miniDisplay.innerText = calcRecordArray;
+   // calcRecordArray.join('C');
+    miniDisplay.innerHTML =   noCommaCalcRecordArray;
     display.innerText = calcResult;
   }
 }
@@ -132,24 +122,21 @@ function inputPush(e){
 function operandPush(e){
   operandVar = e.target.id.slice(0,1);
 
-  //calcRecordArray.push(realDisplay);
-  //console.log("calcRecordArray in operandPush funct: " +  calcRecordArray);
-
   calcRecordArray.push(operandVar);
-  console.log("calcRecordArray in operandPush funct after operator tapped: " +  calcRecordArray);
-
+   noCommaCalcRecordArray = calcRecordArray.join(' ');
 
   operandCounter = "post";
   numberInputArray=[];
   display.innerText = "";
 
-  miniDisplay.innerText = calcRecordArray;
+  miniDisplay.innerHTML = noCommaCalcRecordArray;
 }
 
 // function to clear everything, ready for a new calculation
 function clearAll(){
    numberInputArray = [];
    display.innerText = '';
+  
    inputNumericalValue = 0;
    operandCounter = "pre";
    num1 = 0;
@@ -158,6 +145,8 @@ function clearAll(){
    calcResult = 0;
    calcRecordArray =[];
    calcCounter = 0;
+   calcRecordArray = [];
+   miniDisplay.innerText = '';
 
 }
 

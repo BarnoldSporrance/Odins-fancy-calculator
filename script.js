@@ -16,10 +16,12 @@ let divideOperand = document.getElementById("/_Butt");
 let equalsOperand = document.getElementById("=_Butt");
 
 let allClear = document.getElementById("ac_Butt");
+let miniClear = document.getElementById("c_Butt");
 
 let display = document.getElementById("display");
+let miniDisplay = document.getElementById("miniDisplay");
 let numberInputArray = [];
-let realDisplay ="";
+let realDisplay =[];
 let inputNumericalValue=0;
 let num1;
 let num2;
@@ -27,6 +29,8 @@ let operandCounter = "pre";
 let operand ="";
 let operandVar;
 let calcCounter = 0;
+let calcRecordArray = [];
+
 
 
 // Basic operator functions
@@ -52,9 +56,9 @@ function operate(operand, num1, num2) {
        result = subtract(num1,num2);
     } else if (operand === '*') {
          result = multiply(num1,num2);    
-    } else if (operand === '/') {
+      } else if (operand === '/') {
            result = divide(num1,num2); 
-    }
+        } 
   return result;
 } // end operate function
 
@@ -70,8 +74,8 @@ function inputPush(e){
   inputNumericalValue = parseInt(realDisplay);
   // display the current value on calculator screen
   
-  display.innerText = inputNumericalValue;
-  //console.log("operandCounter in inputPush function: "+ operandCounter);
+  
+  display.innerText = realDisplay;
 
   // decide which number to assign the current input to - first or second number in the current calculation
   if (operandCounter === "pre") {
@@ -82,24 +86,50 @@ function inputPush(e){
   }
   
   let calcResult = operate(operandVar,num1,num2);
+  calcRecordArray.push(num2);
   calcCounter++;
   console.log("calcResult: "+ calcResult);
   equalsOperand.onclick = function(){
-    display.innerText = calcResult;
+    
+    console.log("calcRecordArray after prressing equals: "+  calcRecordArray);
+    
+    
+
+  // calculate the number of digits in the number
+  let numLength = String(calcResult).match(/\d/g).length;
+  console.log("numLength: " +  numLength);
+
+  // round the number to required decimal places
+  if (numLength>3){
+    calcResult = parseFloat(calcResult.toFixed(2));
+    }
+
     // ensure that operations can be layered on top of the last calculation
     if ((operandCounter ==="post") && (calcCounter>0)){
       num1 = calcResult;
+      console.log("calcRecordArray pre pop" + calcRecordArray)
+      //calcRecordArray.pop();
+     
+    //  console.log("calcRecordArray post pop" + calcRecordArray)
+
     }
+    miniDisplay.innerText = calcRecordArray;
+    display.innerText = calcResult;
   }
 }
 
 // function to get the operator used in a calculation
 function operandPush(e){
   operandVar = e.target.id.slice(0,1);
-  console.log("operandVar: "+ operandVar);
-  //console.log("operandCounter in operandPush function pre switch: "+ operandCounter);
+
+  calcRecordArray.push(realDisplay);
+  console.log("calcRecordArray in operandPush funct: " +  calcRecordArray);
+
+  calcRecordArray.push(operandVar);
+  console.log("calcRecordArray in operandPush funct after operator tapped: " +  calcRecordArray);
+
+
   operandCounter = "post";
- // console.log("operandCounter in operandPush function post switch: "+ operandCounter);
   numberInputArray=[];
   display.innerText = "";
 }
@@ -112,6 +142,11 @@ function clearAll(){
    operandCounter = "pre";
    num1 = 0;
    num2 = 0;
+   operandVar="";
+   calcResult = 0;
+   calcRecordArray =[];
+   calcCounter = 0;
+
 }
 
 // adding onclick events to buttons in super inefficent and clumsy fashion. Urgh. 
@@ -130,6 +165,7 @@ subtractOperand.onclick = operandPush;
 multiplyOperand.onclick = operandPush;
 
 allClear.onclick = clearAll;
+miniClear.onclick = clearAll;
 
 
 

@@ -15,6 +15,8 @@ let multiplyOperand = document.getElementById("x_Butt");
 let divideOperand = document.getElementById("/_Butt");
 let equalsOperand = document.getElementById("=_Butt");
 
+let percentOperand = document.getElementById("%_Butt");
+
 let allClear = document.getElementById("ac_Butt");
 let miniClear = document.getElementById("c_Butt");
 
@@ -68,6 +70,7 @@ if ((num1 === undefined) || (num2 === undefined)) {
 
 // functions to get input from 1-9 number buttons
 function inputPush(e){
+  soundPlay();
   // get string values for each number pressed
   let inputVar = e.target.id.slice(0,1);
   // push these 1-9 string values into a string array
@@ -95,7 +98,7 @@ function inputPush(e){
   calcCounter++;
   console.log("calcResult: "+ calcResult);
   equalsOperand.onclick = function(){
-    
+    soundPlay();
     
     
 
@@ -115,11 +118,14 @@ function inputPush(e){
    // calcRecordArray.join('C');
     miniDisplay.innerHTML =   noCommaCalcRecordArray;
     display.innerText = calcResult;
+
+    
   }
 }
 
 // function to get the operator used in a calculation
 function operandPush(e){
+  soundPlay();
   operandVar = e.target.id.slice(0,1);
 
   calcRecordArray.push(operandVar);
@@ -134,6 +140,7 @@ function operandPush(e){
 
 // function to clear everything, ready for a new calculation
 function clearAll(){
+  soundPlay();
    numberInputArray = [];
    display.innerText = '';
   
@@ -147,8 +154,12 @@ function clearAll(){
    calcCounter = 0;
    calcRecordArray = [];
    miniDisplay.innerText = '';
-
 }
+
+function myPlay() {
+  var a = document.getElementById('audio');
+  a.play();
+};
 
 // adding onclick events to buttons in super inefficent and clumsy fashion. Urgh. 
 one.onclick = inputPush;
@@ -170,11 +181,14 @@ equalsOperand.onclick = operate(operandVar,num1,num2);
 allClear.onclick = clearAll;
 miniClear.onclick = clearAll;
 
+function soundPlay(){
+clickySound = document.getElementById("clickySound");
+clickySound.currentTime = 0;
+clickySound.play();
+}
 
 
-
-
-  
+  percentOperand.onclick = soundPlay;
 
 
 

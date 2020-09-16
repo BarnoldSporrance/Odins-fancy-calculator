@@ -84,14 +84,17 @@ function inputPush(e){
   // decide which number to assign the current input to - first or second number in the current calculation
   if (operandCounter === "pre") {
     num1 = inputNumericalValue;
-    calcRecordArray.push(num1);
-    noCommaCalcRecordArray = calcRecordArray.join(' ');
+    //calcRecordArray.push(num1);
+    //noCommaCalcRecordArray = calcRecordArray.join(' ');
 
   } else if(operandCounter === "post") {
     num2 = inputNumericalValue;
-    calcRecordArray.push(num2);
-    noCommaCalcRecordArray = calcRecordArray.join(' ');
+    //calcRecordArray.push(num2);
+    //noCommaCalcRecordArray = calcRecordArray.join(' ');
   }
+
+  calcRecordArray.push(inputNumericalValue);
+
   
   let calcResult = operate(operandVar,num1,num2);
 

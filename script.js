@@ -1,4 +1,5 @@
-// A ridiculuously large list of way too many global variables. Ouch.
+// A ridiculously large list of way too many global variables. Ouch.
+let zero = document.getElementById("0_Butt");
 let one = document.getElementById("1_Butt");
 let two = document.getElementById("2_Butt");
 let three = document.getElementById("3_Butt");
@@ -11,7 +12,7 @@ let nine = document.getElementById("9_Butt");
 
 let addOperand = document.getElementById("+_Butt");
 let subtractOperand = document.getElementById("-_Butt");
-let multiplyOperand = document.getElementById("x_Butt");
+let multiplyOperand = document.getElementById("*_Butt");
 let divideOperand = document.getElementById("/_Butt");
 let equalsOperand = document.getElementById("=_Butt");
 
@@ -33,8 +34,6 @@ let operandVar;
 let calcCounter = 0;
 let calcRecordArray = [];
 let noCommaCalcRecordArray=[];
-
-//** fixed it
 
 // Basic operator functions
 function add(num1, num2) {
@@ -60,7 +59,7 @@ if ((num1 === undefined) || (num2 === undefined)) {
      result = add(num1,num2);
   } else if (operand === '-') {
        result = subtract(num1,num2);
-    } else if (operand === 'x') {
+    } else if (operand === '*') {
          result = multiply(num1,num2);    
       } else if (operand === '/') {
            result = divide(num1,num2); 
@@ -110,7 +109,6 @@ function inputPush(e){
     if ((operandCounter ==="post") && (calcCounter>0)){
       num1 = calcResult;
     }
-   // calcRecordArray.join('C');
     miniDisplay.innerHTML =   noCommaCalcRecordArray;
     display.innerText = calcResult;
   }
@@ -155,6 +153,7 @@ function myPlay() {
 };
 
 // adding onclick events to buttons in super inefficent and clumsy fashion. Urgh. 
+zero.onclick = inputPush;
 one.onclick = inputPush;
 two.onclick = inputPush;
 three.onclick = inputPush;

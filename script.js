@@ -84,18 +84,12 @@ function inputPush(e){
   // decide which number to assign the current input to - first or second number in the current calculation
   if (operandCounter === "pre") {
     num1 = inputNumericalValue;
-    //calcRecordArray.push(num1);
-    //noCommaCalcRecordArray = calcRecordArray.join(' ');
-
   } else if(operandCounter === "post") {
     num2 = inputNumericalValue;
-    //calcRecordArray.push(num2);
-    //noCommaCalcRecordArray = calcRecordArray.join(' ');
   }
 
   calcRecordArray.push(inputNumericalValue);
 
-  
   let calcResult = operate(operandVar,num1,num2);
 
   calcCounter++;
@@ -103,8 +97,6 @@ function inputPush(e){
   equalsOperand.onclick = function(){
     soundPlay();
     
-    
-
   // calculate the number of digits in the number
   let numLength = String(calcResult).match(/\d/g).length;
   console.log("numLength: " +  numLength);
@@ -121,8 +113,6 @@ function inputPush(e){
    // calcRecordArray.join('C');
     miniDisplay.innerHTML =   noCommaCalcRecordArray;
     display.innerText = calcResult;
-
-    
   }
 }
 
@@ -132,7 +122,7 @@ function operandPush(e){
   operandVar = e.target.id.slice(0,1);
 
   calcRecordArray.push(operandVar);
-   noCommaCalcRecordArray = calcRecordArray.join(' ');
+  noCommaCalcRecordArray = calcRecordArray.join('');
 
   operandCounter = "post";
   numberInputArray=[];

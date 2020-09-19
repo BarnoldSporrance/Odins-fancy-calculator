@@ -77,6 +77,8 @@ function inputPush(e){
   // get string values for each number pressed
   let inputVar = e.target.id.slice(0,1);
   // push these 1-9 string values into a string array
+
+
   numberInputArray.push(inputVar);
   //remove the commas to create a string representing the display value
   realDisplay = numberInputArray.join("");
@@ -99,7 +101,7 @@ function inputPush(e){
  
   equalsOperand.onclick = function(){
     soundPlay();
-    calcRecordArray.pop();
+    //calcRecordArray.pop();
     calcRecordArray.push(inputNumericalValue);
     calcResult = operate(operandVar,num1,num2);
        
@@ -124,8 +126,14 @@ function inputPush(e){
 function operandPush(e){
   soundPlay();
   operandVar = e.target.id.slice(0,1);
-
+  
+  //add the pre operand integer to the mini display when there is no calcuation result available
+  let tempHolder = calcRecordArray[calcRecordArray.length-1];
+    calcRecordArray = [];
+    calcRecordArray.push(tempHolder);
+  
   calcRecordArray.push(operandVar);
+
   noCommaCalcRecordArray = calcRecordArray.join('');
 
   operandCounter = "post";
@@ -134,6 +142,18 @@ function operandPush(e){
 
   miniDisplay.innerHTML = noCommaCalcRecordArray;
   console.log("noCommaCalcRecordArray on operandPush: " + noCommaCalcRecordArray);
+
+
+//add result to minidisplay (if result available when operand pressed)
+if (calcResult) {
+    calcRecordArray = [];
+    calcRecordArray.push(calcResult);
+
+    noCommaCalcRecordArray = calcRecordArray.join('');
+    miniDisplay.innerHTML = noCommaCalcRecordArray;
+
+}
+
 }
 
 // function to clear everything, ready for a new calculation

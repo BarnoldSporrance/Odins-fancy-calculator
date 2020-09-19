@@ -1,3 +1,5 @@
+//****Work in progress****
+
 // Too many global variables
 let zero = document.getElementById("0_Butt");
 let one = document.getElementById("1_Butt");
@@ -18,6 +20,7 @@ let equalsOperand = document.getElementById("=_Butt");
 let percentOperand = document.getElementById("%_Butt");
 let allClear = document.getElementById("ac_Butt");
 let miniClear = document.getElementById("c_Butt");
+let decimal = document.getElementById("._Butt");
 let display = document.getElementById("display");
 let miniDisplay = document.getElementById("miniDisplay");
 let numberInputArray = [];
@@ -32,6 +35,10 @@ let calcCounter = 0;
 let calcRecordArray = [];
 let noCommaCalcRecordArray=[];
 let calcResult;
+let deciHolder = '';
+let negToggle = "off";
+
+let banana=0;
 // Basic operator functions
 function add(num1, num2) {
   return num1 + num2;
@@ -152,8 +159,8 @@ function clearOne(){
   calcRecordArray = []
   calcRecordArray.push(inputNumericalValue);
   display.innerText = inputNumericalValue;
-  if (inputNumericalValue === NaN) {
-    display.innerText = "ERROR";
+  if (display.innerHTML == NaN) {
+    display.innerHTML = "ERROR";
   }
   if (operandCounter === "pre") {
      num1 = inputNumericalValue;
@@ -165,9 +172,14 @@ function clearOne(){
 function polarityToggle(){
   if (operandCounter === "pre") {
     num1 = -num1;
+    inputNumericalValue = num1;
+    calcRecordArray.push(inputNumericalValue);
     display.innerText = num1;
+    
    } else if(operandCounter === "post") {
      num2 = -num2;
+     inputNumercialValue = num2;
+     calcRecordArray.push(inputNumericalValue);
      display.innerText = num2;
      }
   if (calcResult) {
@@ -177,6 +189,11 @@ function polarityToggle(){
   if ((calcResult) && (num1)) {
   num1 = calcResult;
   }
+
+  negToggle = "on";
+
+  
+  soundPlay();
 }
 function soundPlay(){
   clickySound = document.getElementById("clickySound");
@@ -201,6 +218,7 @@ multiplyOperand.onclick = operandPush;
 allClear.onclick = clearAll;
 miniClear.onclick = clearOne;
 posNegTogg.onclick = polarityToggle;
+decimal.onclick = toDecimal;
 
 
 

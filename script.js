@@ -11,6 +11,7 @@ let eight = document.getElementById("8_Butt");
 let nine = document.getElementById("9_Butt");
 
 let addOperand = document.getElementById("+_Butt");
+let posNegTogg = document.getElementById("+-ToggleButt");
 let subtractOperand = document.getElementById("-_Butt");
 let multiplyOperand = document.getElementById("*_Butt");
 let divideOperand = document.getElementById("/_Butt");
@@ -34,6 +35,7 @@ let operandVar;
 let calcCounter = 0;
 let calcRecordArray = [];
 let noCommaCalcRecordArray=[];
+let calcResult;
 
 // Basic operator functions
 function add(num1, num2) {
@@ -52,8 +54,10 @@ function divide (num1, num2) {
 //function to operate on two numbers given an operator
 function operate(operand, num1, num2) {
   let result = 0;
-if ((num1 === undefined) || (num2 === undefined)) {
+if ((num1) && (num2 === 0) && (operand ==='/')) {
+  
   result = "ERROR";
+  display.innerText = result;
   
 } else if (operand === '+'){
      result = add(num1,num2);
@@ -78,28 +82,30 @@ function inputPush(e){
   realDisplay = numberInputArray.join("");
   // convert display string to a number for subsequent operations
   inputNumericalValue = parseInt(realDisplay);
-  // display the current value on calculator screen
-  display.innerText = realDisplay;
-  // decide which number to assign the current input to - first or second number in the current calculation
-  if (operandCounter === "pre") {
-    num1 = inputNumericalValue;
-  } else if(operandCounter === "post") {
-    num2 = inputNumericalValue;
-  }
 
   calcRecordArray.push(inputNumericalValue);
 
-  let calcResult = operate(operandVar,num1,num2);
-
+  // display the current value on calculator screen
+  display.innerText = inputNumericalValue;
+  // decide which number to assign the current input to - first or second number in the current calculation
+  if (operandCounter === "pre") {
+    num1 = inputNumericalValue;
+   // calcRecordArray.push(num1);
+  } else if(operandCounter === "post") {
+    num2 = inputNumericalValue;
+  //  calcRecordArray.push(num2)
+  }
   calcCounter++;
-  console.log("calcResult: "+ calcResult);
+ 
   equalsOperand.onclick = function(){
     soundPlay();
-    
+    calcRecordArray.pop();
+    calcRecordArray.push(inputNumericalValue);
+    calcResult = operate(operandVar,num1,num2);
+       
   // calculate the number of digits in the number
   let numLength = String(calcResult).match(/\d/g).length;
-  console.log("numLength: " +  numLength);
-
+ 
   // round the number to required decimal places
   if (numLength>3){
     calcResult = parseFloat(calcResult.toFixed(2));
@@ -109,7 +115,7 @@ function inputPush(e){
     if ((operandCounter ==="post") && (calcCounter>0)){
       num1 = calcResult;
     }
-    miniDisplay.innerHTML =   noCommaCalcRecordArray;
+    miniDisplay.innerHTML =  noCommaCalcRecordArray;
     display.innerText = calcResult;
   }
 }
@@ -124,9 +130,10 @@ function operandPush(e){
 
   operandCounter = "post";
   numberInputArray=[];
-  display.innerText = "";
+  display.innerText = operandVar;
 
   miniDisplay.innerHTML = noCommaCalcRecordArray;
+  console.log("noCommaCalcRecordArray on operandPush: " + noCommaCalcRecordArray);
 }
 
 // function to clear everything, ready for a new calculation
@@ -145,12 +152,57 @@ function clearAll(){
    calcCounter = 0;
    calcRecordArray = [];
    miniDisplay.innerText = '';
+   noCommaCalcRecordArray =[];
 }
 
-function myPlay() {
-  var a = document.getElementById('audio');
-  a.play();
-};
+// function to delete the last digit from thecurrent integer being entered
+function clearOne(){
+  soundPlay();
+  let popArray = Array.from(inputNumericalValue.toString());
+  
+  popArray.pop();
+  popArrayAfterJoin = popArray.join('');
+  popArrayAfterParseInt = parseInt(popArrayAfterJoin);
+ 
+  display.innerText = '';
+  inputNumericalValue = popArrayAfterParseInt;
+ 
+ 
+
+  calcRecordArray = []
+  calcRecordArray.push(inputNumericalValue);
+  display.innerText = inputNumericalValue;
+  if (inputNumericalValue === NaN) {
+    display.innerText = "ERROR";
+  }
+
+   
+
+
+   if (operandCounter === "pre") {
+     num1 = inputNumericalValue;
+    
+    } else if(operandCounter === "post") {
+      num2 = inputNumericalValue;
+      }
+
+      
+}
+
+//function to toggle postive negative numbers
+function polarityToggle(){
+  if (operandCounter === "pre") {
+    num1 = -num1;
+    display.innerText = num1;
+   } else if(operandCounter === "post") {
+     num2 = -num2;
+     display.innerText = num2;
+     }
+}
+
+
+
+
 
 // adding onclick events to buttons in super inefficent and clumsy fashion. Urgh. 
 zero.onclick = inputPush;
@@ -168,10 +220,8 @@ addOperand.onclick = operandPush;
 subtractOperand.onclick = operandPush;
 multiplyOperand.onclick = operandPush;
 
-equalsOperand.onclick = operate(operandVar,num1,num2);
-
 allClear.onclick = clearAll;
-miniClear.onclick = clearAll;
+miniClear.onclick = clearOne;
 
 function soundPlay(){
 clickySound = document.getElementById("clickySound");
@@ -179,8 +229,8 @@ clickySound.currentTime = 0;
 clickySound.play();
 }
 
+posNegTogg.onclick = polarityToggle;
 
-  percentOperand.onclick = soundPlay;
 
 
 

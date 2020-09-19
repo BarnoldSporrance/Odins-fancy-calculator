@@ -37,7 +37,6 @@ let noCommaCalcRecordArray=[];
 let calcResult;
 let deciHolder = '';
 let negToggle = "off";
-
 let banana=0;
 // Basic operator functions
 function add(num1, num2) {
